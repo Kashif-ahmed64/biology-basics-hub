@@ -1,73 +1,165 @@
-# Welcome to your Lovable project
+# BioLearn - Interactive Biology Education Platform
 
-## Project info
+A free, comprehensive biology education website built with React, featuring interactive lessons, 3D visualizations, and engaging quizzes.
 
-**URL**: https://lovable.dev/projects/e439d40a-fe3a-435d-a065-cf24ed5bf82b
+## 🧬 Features
 
-## How can I edit this code?
+- **Home Page**: Welcome section with overview and call-to-action
+- **Chapters**: Browse biology topics organized by chapters (Cell Biology, Genetics, Evolution, Ecology)
+- **Topic Pages**: Detailed lessons with interactive 3D visualizations using React Three Fiber
+- **Quiz System**: Test your knowledge with interactive quizzes and instant feedback
+- **Search**: Find chapters and topics across the entire curriculum
+- **Responsive Design**: Mobile-first design that works on all devices
+- **Modern UI**: Clean, nature-inspired design with smooth animations
 
-There are several ways of editing your application.
+## 🚀 Getting Started
 
-**Use Lovable**
+### Prerequisites
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/e439d40a-fe3a-435d-a065-cf24ed5bf82b) and start prompting.
+- Node.js (v16 or higher)
+- npm or yarn
 
-Changes made via Lovable will be committed automatically to this repo.
+### Installation
 
-**Use your preferred IDE**
-
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
-
-```sh
-# Step 1: Clone the repository using the project's Git URL.
+1. Clone the repository:
+```bash
 git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
 cd <YOUR_PROJECT_NAME>
+```
 
-# Step 3: Install the necessary dependencies.
-npm i
+2. Install dependencies:
+```bash
+npm install
+```
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
+3. Start the development server:
+```bash
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+4. Open your browser and visit `http://localhost:8080`
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+## 📁 Project Structure
 
-**Use GitHub Codespaces**
+```
+src/
+├── components/          # Reusable UI components
+│   ├── Navbar.tsx      # Navigation bar
+│   ├── Footer.tsx      # Footer component
+│   ├── ChapterCard.tsx # Chapter display card
+│   ├── ThreeDCell.tsx  # 3D cell visualization
+│   └── QuizQuestion.tsx # Quiz question component
+├── pages/              # Page components
+│   ├── Home.tsx        # Landing page
+│   ├── Chapters.tsx    # Chapters list
+│   ├── Topic.tsx       # Individual topic page
+│   ├── Quiz.tsx        # Quiz interface
+│   └── Search.tsx      # Search functionality
+├── store/              # State management
+│   └── biologyStore.ts # Zustand store for biology content
+├── assets/             # Images and static files
+└── styles/             # Tailwind customizations
+```
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+## 🎨 Design System
 
-## What technologies are used for this project?
+The project uses a custom design system with:
+- **Colors**: Teal and blue primary colors inspired by cellular biology
+- **Typography**: Merriweather for headings, Inter for body text
+- **Components**: shadcn/ui component library with custom styling
+- **Animations**: Smooth fade-in and slide-in effects
 
-This project is built with:
+## 🛠️ Built With
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+- **React** - Frontend framework
+- **TypeScript** - Type safety
+- **Vite** - Build tool
+- **Tailwind CSS** - Styling
+- **React Router** - Navigation
+- **Zustand** - State management
+- **React Three Fiber** - 3D visualizations
+- **shadcn/ui** - UI components
 
-## How can I deploy this project?
+## 📝 Adding Content
 
-Simply open [Lovable](https://lovable.dev/projects/e439d40a-fe3a-435d-a065-cf24ed5bf82b) and click on Share -> Publish.
+### Adding a New Chapter
 
-## Can I connect a custom domain to my Lovable project?
+Edit `src/store/biologyStore.ts` and add to the `mockChapters` array:
 
-Yes, you can!
+```typescript
+{
+  id: '5',
+  title: 'Your Chapter Title',
+  description: 'Chapter description',
+  topics: [
+    { 
+      id: '5-1', 
+      title: 'Topic Title', 
+      description: 'Topic description', 
+      chapter: '5' 
+    },
+  ]
+}
+```
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+### Adding Quiz Questions
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+Edit `src/pages/Quiz.tsx` and add to the `mockQuestions` array:
+
+```typescript
+{
+  id: '4',
+  text: 'Your question?',
+  options: ['Option 1', 'Option 2', 'Option 3', 'Option 4'],
+  correctAnswer: 0, // Index of correct answer
+  explanation: 'Explanation of the answer',
+}
+```
+
+## 🎯 Future Enhancements
+
+This is a skeleton project ready for expansion:
+
+- **Backend Integration**: Add user accounts and progress tracking with Lovable Cloud
+- **Content Management**: Create an admin panel for managing chapters and quizzes
+- **Advanced 3D Models**: Add more detailed 3D visualizations for different topics
+- **Video Integration**: Embed educational videos in lessons
+- **Interactive Diagrams**: Add clickable, annotated diagrams
+- **Gamification**: Add achievements, points, and leaderboards
+- **Discussion Forums**: Enable student collaboration
+- **Accessibility**: Enhance ARIA labels and keyboard navigation
+
+## 📱 Mobile Support
+
+The application is fully responsive and optimized for mobile devices with:
+- Touch-friendly navigation
+- Responsive layouts
+- Optimized 3D performance
+- Mobile-first design approach
+
+## 🤝 Contributing
+
+This is an educational project template. Feel free to:
+1. Fork the repository
+2. Add your content and features
+3. Share with students and educators
+
+## 📄 License
+
+This project is free and open-source, designed for educational purposes.
+
+## 🔗 Links
+
+- **Project URL**: https://lovable.dev/projects/e439d40a-fe3a-435d-a065-cf24ed5bf82b
+- **Documentation**: [Lovable Docs](https://docs.lovable.dev/)
+
+## 🎓 Perfect For
+
+- Biology teachers creating digital resources
+- Students building study tools
+- Educational institutions developing online content
+- Self-learners exploring biology
+
+---
+
+Built with ❤️ for biology education
