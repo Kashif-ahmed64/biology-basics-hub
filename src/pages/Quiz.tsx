@@ -2,8 +2,10 @@ import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import QuizQuestion from '@/components/QuizQuestion';
-import { Brain, RotateCcw } from 'lucide-react';
+import { Brain, RotateCcw, TrendingUp, Award, BookOpen } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import ProgressBar from '@/components/ProgressBar';
+import { toast } from 'sonner';
 
 const mockQuestions = [
   {
@@ -33,11 +35,21 @@ const Quiz = () => {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [score, setScore] = useState(0);
   const [showResults, setShowResults] = useState(false);
+  const [answeredQuestions, setAnsweredQuestions] = useState<boolean[]>(
+    new Array(mockQuestions.length).fill(false)
+  );
 
   const handleAnswer = (correct: boolean) => {
     if (correct) {
       setScore(score + 1);
+      toast.success('Correct! Well done! 🎉');
+    } else {
+      toast.error('Not quite right. Keep learning!');
     }
+    
+    const newAnswered = [...answeredQuestions];
+    newAnswered[currentQuestion] = true;
+    setAnsweredQuestions(newAnswered);
   };
 
   const handleNext = () => {
@@ -52,6 +64,15 @@ const Quiz = () => {
     setCurrentQuestion(0);
     setScore(0);
     setShowResults(false);
+    setAnsweredQuestions(new Array(mockQuestions.length).fill(false));
+  };
+
+  const getPerformanceMessage = () => {
+    const percentage = (score / mockQuestions.length) * 100;
+    if (percentage === 100) return { emoji: '🏆', message: 'Perfect score! You\'re a biology expert!' };
+    if (percentage >= 80) return { emoji: '🌟', message: 'Excellent work! You have a strong understanding!' };
+    if (percentage >= 60) return { emoji: '👍', message: 'Good job! Keep studying to improve further.' };
+    return { emoji: '📚', message: 'Keep learning! Review the chapters and try again.' };
   };
 
   return (
@@ -71,46 +92,90 @@ const Quiz = () => {
       <div className="max-w-3xl mx-auto">
         {!showResults ? (
           <div className="space-y-6">
-            <div className="flex justify-between items-center text-sm text-muted-foreground">
-              <span>Question {currentQuestion + 1} of {mockQuestions.length}</span>
-              <span>Score: {score}/{mockQuestions.length}</span>
-            </div>
+            <Card className="bg-muted/30">
+              <CardContent className="pt-6">
+                <ProgressBar 
+                  current={currentQuestion + 1} 
+                  total={mockQuestions.length}
+                  label="Quiz Progress"
+                />
+                <div className="flex justify-between items-center mt-4 text-sm">
+                  <span className="text-muted-foreground">Current Score</span>
+                  <span className="font-bold text-lg text-primary">{score}/{currentQuestion}</span>
+                </div>
+              </CardContent>
+            </Card>
 
             <QuizQuestion
               question={mockQuestions[currentQuestion]}
               onAnswer={handleAnswer}
             />
 
-            <div className="text-center">
-              <Button onClick={handleNext} variant="ghost">
-                Skip to Next →
+            <div className="flex justify-between items-center">
+              <Button 
+                onClick={handleNext} 
+                variant="ghost"
+                disabled={!answeredQuestions[currentQuestion]}
+              >
+                {currentQuestion === mockQuestions.length - 1 ? 'See Results' : 'Skip to Next'} →
               </Button>
+              <span className="text-sm text-muted-foreground">
+                {answeredQuestions[currentQuestion] ? '✓ Answered' : 'Answer to continue'}
+              </span>
             </div>
           </div>
         ) : (
           <Card className="text-center animate-fade-in">
             <CardHeader>
-              <CardTitle className="text-3xl font-heading">Quiz Complete! 🎉</CardTitle>
-              <CardDescription>Here's how you did:</CardDescription>
+              <div className="text-6xl mb-4">{getPerformanceMessage().emoji}</div>
+              <CardTitle className="text-3xl font-heading">Quiz Complete!</CardTitle>
+              <CardDescription>Here's your performance summary</CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
-              <div className="text-6xl font-bold text-gradient">
-                {score}/{mockQuestions.length}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <Card>
+                  <CardContent className="pt-6">
+                    <Award className="h-8 w-8 text-primary mx-auto mb-2" />
+                    <div className="text-3xl font-bold">{score}</div>
+                    <div className="text-sm text-muted-foreground">Correct Answers</div>
+                  </CardContent>
+                </Card>
+                <Card>
+                  <CardContent className="pt-6">
+                    <TrendingUp className="h-8 w-8 text-primary mx-auto mb-2" />
+                    <div className="text-3xl font-bold">
+                      {Math.round((score / mockQuestions.length) * 100)}%
+                    </div>
+                    <div className="text-sm text-muted-foreground">Score</div>
+                  </CardContent>
+                </Card>
+                <Card>
+                  <CardContent className="pt-6">
+                    <Brain className="h-8 w-8 text-primary mx-auto mb-2" />
+                    <div className="text-3xl font-bold">{mockQuestions.length}</div>
+                    <div className="text-sm text-muted-foreground">Total Questions</div>
+                  </CardContent>
+                </Card>
               </div>
-              <p className="text-xl text-muted-foreground">
-                {score === mockQuestions.length
-                  ? 'Perfect score! You\'re a biology expert!'
-                  : score >= mockQuestions.length / 2
-                  ? 'Great job! Keep learning to improve even more.'
-                  : 'Good effort! Review the chapters and try again.'}
-              </p>
+
+              <div className="p-6 bg-muted/50 rounded-lg">
+                <p className="text-lg font-medium mb-2">{getPerformanceMessage().message}</p>
+                <ProgressBar 
+                  current={score} 
+                  total={mockQuestions.length}
+                />
+              </div>
+
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Button onClick={resetQuiz} className="gap-2">
                   <RotateCcw className="h-4 w-4" />
                   Try Again
                 </Button>
                 <Link to="/chapters">
-                  <Button variant="outline">Review Chapters</Button>
+                  <Button variant="outline" className="gap-2">
+                    <BookOpen className="h-4 w-4" />
+                    Review Chapters
+                  </Button>
                 </Link>
               </div>
             </CardContent>
@@ -118,22 +183,34 @@ const Quiz = () => {
         )}
       </div>
 
-      <div className="mt-12 text-center">
-        <Card className="max-w-2xl mx-auto">
-          <CardHeader>
-            <CardTitle className="font-heading">Quiz Features (Coming Soon)</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <ul className="text-left space-y-2 text-muted-foreground">
-              <li>✨ Chapter-specific quizzes</li>
-              <li>✨ Difficulty levels (Easy, Medium, Hard)</li>
-              <li>✨ Progress tracking and analytics</li>
-              <li>✨ Timed challenges</li>
-              <li>✨ Detailed explanations for all answers</li>
-            </ul>
-          </CardContent>
-        </Card>
-      </div>
+      {!showResults && (
+        <div className="mt-12 text-center">
+          <Card className="max-w-2xl mx-auto bg-gradient-to-br from-primary/5 to-secondary/5">
+            <CardHeader>
+              <CardTitle className="font-heading flex items-center justify-center gap-2">
+                <Brain className="h-5 w-5" />
+                Study Tips
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <ul className="text-left space-y-3 text-muted-foreground">
+                <li className="flex items-start gap-2">
+                  <span className="text-primary">💡</span>
+                  <span>Read the explanation carefully after each question to learn from mistakes</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-primary">📚</span>
+                  <span>Review chapter content before taking the quiz for better results</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-primary">🎯</span>
+                  <span>Take your time - there's no time limit, focus on understanding</span>
+                </li>
+              </ul>
+            </CardContent>
+          </Card>
+        </div>
+      )}
     </div>
   );
 };

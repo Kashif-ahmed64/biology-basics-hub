@@ -1,6 +1,7 @@
 import { useBiologyStore } from '@/store/biologyStore';
 import ChapterCard from '@/components/ChapterCard';
-import { BookOpen } from 'lucide-react';
+import { BookOpen, GraduationCap } from 'lucide-react';
+import { Card, CardContent } from '@/components/ui/card';
 
 const Chapters = () => {
   const chapters = useBiologyStore((state) => state.chapters);
@@ -19,6 +20,22 @@ const Chapters = () => {
           Each chapter contains multiple lessons with interactive content.
         </p>
       </div>
+
+      {/* Learning Path Info */}
+      <Card className="max-w-3xl mx-auto mb-12 bg-gradient-to-r from-primary/10 to-secondary/10">
+        <CardContent className="pt-6">
+          <div className="flex items-start gap-4">
+            <GraduationCap className="h-8 w-8 text-primary flex-shrink-0 mt-1" />
+            <div>
+              <h3 className="font-heading font-semibold text-lg mb-2">Your Learning Journey</h3>
+              <p className="text-muted-foreground">
+                Start with Cell Biology and progress through each chapter. Topics are organized sequentially 
+                for optimal learning. Click any topic to begin your lesson!
+              </p>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
 
       <div className="grid md:grid-cols-2 gap-8 max-w-6xl mx-auto">
         {chapters.map((chapter, index) => (
