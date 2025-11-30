@@ -2,13 +2,21 @@ import { useParams, Link } from 'react-router-dom';
 import { useBiologyStore } from '@/store/biologyStore';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { ArrowLeft, BookOpen } from 'lucide-react';
+import { ArrowLeft, BookOpen, ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
 import ThreeDCell from '@/components/ThreeDCell';
+import Breadcrumbs from '@/components/Breadcrumbs';
 
 const Topic = () => {
   const { id } = useParams<{ id: string }>();
   const getTopic = useBiologyStore((state) => state.getTopicById);
+  const getChapter = useBiologyStore((state) => state.getChapterById);
+  const getNextTopic = useBiologyStore((state) => state.getNextTopic);
+  const getPreviousTopic = useBiologyStore((state) => state.getPreviousTopic);
+  
   const topic = id ? getTopic(id) : undefined;
+  const chapter = topic ? getChapter(topic.chapter) : undefined;
+  const nextTopic = id ? getNextTopic(id) : undefined;
+  const previousTopic = id ? getPreviousTopic(id) : undefined;
 
   if (!topic) {
     return (
@@ -26,12 +34,13 @@ const Topic = () => {
 
   return (
     <div className="container mx-auto px-4 py-12 max-w-4xl">
-      <Link to="/chapters">
-        <Button variant="ghost" className="gap-2 mb-6">
-          <ArrowLeft className="h-4 w-4" />
-          Back to Chapters
-        </Button>
-      </Link>
+      <Breadcrumbs 
+        items={[
+          { label: 'Chapters', href: '/chapters' },
+          { label: chapter?.title || 'Chapter', href: '/chapters' },
+          { label: topic.title }
+        ]}
+      />
 
       <div className="space-y-8 animate-fade-in">
         <div>
@@ -82,16 +91,52 @@ const Topic = () => {
               </div>
             </div>
 
-            <div className="flex gap-4 pt-4">
+            <div className="flex flex-col sm:flex-row gap-4 pt-4">
               <Link to="/quiz" className="flex-1">
-                <Button className="w-full">Test Your Knowledge</Button>
-              </Link>
-              <Link to="/chapters" className="flex-1">
-                <Button variant="outline" className="w-full">Next Topic</Button>
+                <Button className="w-full gap-2">
+                  <BookOpen className="h-4 w-4" />
+                  Test Your Knowledge
+                </Button>
               </Link>
             </div>
           </CardContent>
         </Card>
+
+        {/* Navigation between topics */}
+        <div className="flex justify-between items-center pt-8 border-t">
+          {previousTopic ? (
+            <Link to={`/topic/${previousTopic.id}`}>
+              <Button variant="outline" className="gap-2">
+                <ChevronLeft className="h-4 w-4" />
+                <div className="text-left">
+                  <div className="text-xs text-muted-foreground">Previous</div>
+                  <div className="font-medium">{previousTopic.title}</div>
+                </div>
+              </Button>
+            </Link>
+          ) : (
+            <div />
+          )}
+          
+          {nextTopic ? (
+            <Link to={`/topic/${nextTopic.id}`}>
+              <Button variant="outline" className="gap-2">
+                <div className="text-right">
+                  <div className="text-xs text-muted-foreground">Next</div>
+                  <div className="font-medium">{nextTopic.title}</div>
+                </div>
+                <ChevronRight className="h-4 w-4" />
+              </Button>
+            </Link>
+          ) : (
+            <Link to="/chapters">
+              <Button variant="outline" className="gap-2">
+                Back to Chapters
+                <ArrowRight className="h-4 w-4" />
+              </Button>
+            </Link>
+          )}
+        </div>
       </div>
     </div>
   );

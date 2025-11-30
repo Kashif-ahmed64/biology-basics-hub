@@ -1,6 +1,7 @@
 import { Link, useLocation } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Microscope, BookOpen, Search, Brain } from 'lucide-react';
+import MobileMenu from './MobileMenu';
 
 const Navbar = () => {
   const location = useLocation();
@@ -60,6 +61,7 @@ const Navbar = () => {
                 <Search className="h-4 w-4" />
               </Button>
             </Link>
+            <MobileMenu />
           </div>
         </div>
       </div>

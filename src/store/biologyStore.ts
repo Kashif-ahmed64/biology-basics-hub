@@ -6,6 +6,8 @@ export interface Topic {
   description: string;
   chapter: string;
   content?: string;
+  nextTopicId?: string;
+  previousTopicId?: string;
 }
 
 export interface Chapter {
@@ -21,6 +23,8 @@ interface BiologyStore {
   setSearchQuery: (query: string) => void;
   getTopicById: (id: string) => Topic | undefined;
   getChapterById: (id: string) => Chapter | undefined;
+  getNextTopic: (currentTopicId: string) => Topic | undefined;
+  getPreviousTopic: (currentTopicId: string) => Topic | undefined;
 }
 
 // Mock data for placeholder
@@ -30,9 +34,29 @@ const mockChapters: Chapter[] = [
     title: 'Cell Biology',
     description: 'Explore the fundamental units of life - cells, their structures, and functions.',
     topics: [
-      { id: '1-1', title: 'Cell Structure', description: 'Learn about organelles and their roles', chapter: '1' },
-      { id: '1-2', title: 'Cell Membrane', description: 'Understanding the selective barrier', chapter: '1' },
-      { id: '1-3', title: 'Cellular Respiration', description: 'Energy production in cells', chapter: '1' },
+      { 
+        id: '1-1', 
+        title: 'Cell Structure', 
+        description: 'Learn about organelles and their roles', 
+        chapter: '1',
+        nextTopicId: '1-2'
+      },
+      { 
+        id: '1-2', 
+        title: 'Cell Membrane', 
+        description: 'Understanding the selective barrier', 
+        chapter: '1',
+        previousTopicId: '1-1',
+        nextTopicId: '1-3'
+      },
+      { 
+        id: '1-3', 
+        title: 'Cellular Respiration', 
+        description: 'Energy production in cells', 
+        chapter: '1',
+        previousTopicId: '1-2',
+        nextTopicId: '2-1'
+      },
     ]
   },
   {
@@ -40,9 +64,30 @@ const mockChapters: Chapter[] = [
     title: 'Genetics',
     description: 'Discover how traits are inherited and the role of DNA in living organisms.',
     topics: [
-      { id: '2-1', title: 'DNA Structure', description: 'The double helix and genetic code', chapter: '2' },
-      { id: '2-2', title: 'Gene Expression', description: 'From DNA to proteins', chapter: '2' },
-      { id: '2-3', title: 'Inheritance Patterns', description: 'Mendelian genetics', chapter: '2' },
+      { 
+        id: '2-1', 
+        title: 'DNA Structure', 
+        description: 'The double helix and genetic code', 
+        chapter: '2',
+        previousTopicId: '1-3',
+        nextTopicId: '2-2'
+      },
+      { 
+        id: '2-2', 
+        title: 'Gene Expression', 
+        description: 'From DNA to proteins', 
+        chapter: '2',
+        previousTopicId: '2-1',
+        nextTopicId: '2-3'
+      },
+      { 
+        id: '2-3', 
+        title: 'Inheritance Patterns', 
+        description: 'Mendelian genetics', 
+        chapter: '2',
+        previousTopicId: '2-2',
+        nextTopicId: '3-1'
+      },
     ]
   },
   {
@@ -50,9 +95,30 @@ const mockChapters: Chapter[] = [
     title: 'Evolution',
     description: 'Understand the mechanisms of evolution and natural selection.',
     topics: [
-      { id: '3-1', title: 'Natural Selection', description: 'Darwin\'s theory of evolution', chapter: '3' },
-      { id: '3-2', title: 'Adaptation', description: 'How organisms fit their environment', chapter: '3' },
-      { id: '3-3', title: 'Speciation', description: 'Formation of new species', chapter: '3' },
+      { 
+        id: '3-1', 
+        title: 'Natural Selection', 
+        description: 'Darwin\'s theory of evolution', 
+        chapter: '3',
+        previousTopicId: '2-3',
+        nextTopicId: '3-2'
+      },
+      { 
+        id: '3-2', 
+        title: 'Adaptation', 
+        description: 'How organisms fit their environment', 
+        chapter: '3',
+        previousTopicId: '3-1',
+        nextTopicId: '3-3'
+      },
+      { 
+        id: '3-3', 
+        title: 'Speciation', 
+        description: 'Formation of new species', 
+        chapter: '3',
+        previousTopicId: '3-2',
+        nextTopicId: '4-1'
+      },
     ]
   },
   {
@@ -60,9 +126,29 @@ const mockChapters: Chapter[] = [
     title: 'Ecology',
     description: 'Study the interactions between organisms and their environment.',
     topics: [
-      { id: '4-1', title: 'Ecosystems', description: 'Communities and their environments', chapter: '4' },
-      { id: '4-2', title: 'Food Chains', description: 'Energy flow in nature', chapter: '4' },
-      { id: '4-3', title: 'Biodiversity', description: 'Variety of life on Earth', chapter: '4' },
+      { 
+        id: '4-1', 
+        title: 'Ecosystems', 
+        description: 'Communities and their environments', 
+        chapter: '4',
+        previousTopicId: '3-3',
+        nextTopicId: '4-2'
+      },
+      { 
+        id: '4-2', 
+        title: 'Food Chains', 
+        description: 'Energy flow in nature', 
+        chapter: '4',
+        previousTopicId: '4-1',
+        nextTopicId: '4-3'
+      },
+      { 
+        id: '4-3', 
+        title: 'Biodiversity', 
+        description: 'Variety of life on Earth', 
+        chapter: '4',
+        previousTopicId: '4-2'
+      },
     ]
   },
 ];
@@ -81,5 +167,19 @@ export const useBiologyStore = create<BiologyStore>((set, get) => ({
   },
   getChapterById: (id) => {
     return get().chapters.find(c => c.id === id);
+  },
+  getNextTopic: (currentTopicId) => {
+    const currentTopic = get().getTopicById(currentTopicId);
+    if (currentTopic?.nextTopicId) {
+      return get().getTopicById(currentTopic.nextTopicId);
+    }
+    return undefined;
+  },
+  getPreviousTopic: (currentTopicId) => {
+    const currentTopic = get().getTopicById(currentTopicId);
+    if (currentTopic?.previousTopicId) {
+      return get().getTopicById(currentTopic.previousTopicId);
+    }
+    return undefined;
   },
 }));
