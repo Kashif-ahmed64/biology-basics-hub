@@ -8,6 +8,7 @@ import Footer from "./components/Footer";
 import Home from "./pages/Home";
 import Chapters from "./pages/Chapters";
 import Topic from "./pages/Topic";
+import AnatomyViewer from "./pages/AnatomyViewer";
 import Quiz from "./pages/Quiz";
 import Search from "./pages/Search";
 import NotFound from "./pages/NotFound";
@@ -27,6 +28,7 @@ const App = () => (
               <Route path="/" element={<Home />} />
               <Route path="/chapters" element={<Chapters />} />
               <Route path="/topic/:id" element={<Topic />} />
+              <Route path="/anatomy" element={<AnatomyViewer />} />
               <Route path="/quiz" element={<Quiz />} />
               <Route path="/search" element={<Search />} />
               <Route path="*" element={<NotFound />} />

@@ -1,6 +1,6 @@
 import { Link, useLocation } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { Microscope, BookOpen, Search, Brain } from 'lucide-react';
+import { Microscope, BookOpen, Search, Brain, User } from 'lucide-react';
 import MobileMenu from './MobileMenu';
 
 const Navbar = () => {
@@ -34,6 +34,15 @@ const Navbar = () => {
               >
                 <Brain className="h-4 w-4" />
                 Chapters
+              </Button>
+            </Link>
+            <Link to="/anatomy">
+              <Button
+                variant={isActive('/anatomy') ? 'default' : 'ghost'}
+                className="gap-2"
+              >
+                <User className="h-4 w-4" />
+                3D Anatomy
               </Button>
             </Link>
             <Link to="/quiz">

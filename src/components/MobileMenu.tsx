@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
-import { Menu, BookOpen, Brain, Microscope, Search, Home } from 'lucide-react';
+import { Menu, BookOpen, Brain, Microscope, Search, Home, User } from 'lucide-react';
 
 const MobileMenu = () => {
   const [open, setOpen] = useState(false);
@@ -13,6 +13,7 @@ const MobileMenu = () => {
   const menuItems = [
     { path: '/', label: 'Home', icon: Home },
     { path: '/chapters', label: 'Chapters', icon: BookOpen },
+    { path: '/anatomy', label: '3D Anatomy', icon: User },
     { path: '/quiz', label: 'Quiz', icon: Brain },
     { path: '/search', label: 'Search', icon: Search },
   ];
