@@ -53,22 +53,22 @@ const Home = () => {
         <div className="grid md:grid-cols-3 gap-8">
           <Card className="card-hover animate-fade-in">
             <CardHeader>
-              <Microscope className="h-12 w-12 text-primary mb-4" />
-              <CardTitle className="font-heading">Interactive Content</CardTitle>
+              <BookOpen className="h-12 w-12 text-primary mb-4" />
+              <CardTitle className="font-heading">Grade 9-12 Curriculum</CardTitle>
               <CardDescription>
-                Engage with 3D models, animations, and interactive diagrams that make 
-                complex concepts easy to understand.
+                Complete Sindh Board biology curriculum from 9th to 12th grade with 
+                cross-referenced topics and comprehensive coverage.
               </CardDescription>
             </CardHeader>
           </Card>
 
           <Card className="card-hover animate-fade-in" style={{ animationDelay: '0.1s' }}>
             <CardHeader>
-              <BookOpen className="h-12 w-12 text-primary mb-4" />
-              <CardTitle className="font-heading">Comprehensive Lessons</CardTitle>
+              <Microscope className="h-12 w-12 text-primary mb-4" />
+              <CardTitle className="font-heading">3D Human Anatomy</CardTitle>
               <CardDescription>
-                From cell biology to ecology, explore all major topics with detailed 
-                explanations and real-world examples.
+                Explore interactive 3D models of the human body from skin to skeleton,
+                muscles to organs with detailed information.
               </CardDescription>
             </CardHeader>
           </Card>
@@ -76,10 +76,10 @@ const Home = () => {
           <Card className="card-hover animate-fade-in" style={{ animationDelay: '0.2s' }}>
             <CardHeader>
               <Brain className="h-12 w-12 text-primary mb-4" />
-              <CardTitle className="font-heading">Test Your Knowledge</CardTitle>
+              <CardTitle className="font-heading">First Aid Training</CardTitle>
               <CardDescription>
-                Reinforce learning with quizzes and practice questions designed to 
-                help you master each topic.
+                Learn essential life-saving skills including CPR, bleeding control,
+                and emergency medical procedures.
               </CardDescription>
             </CardHeader>
           </Card>
