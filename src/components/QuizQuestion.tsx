@@ -14,9 +14,10 @@ interface QuizQuestionProps {
     explanation: string;
   };
   onAnswer: (correct: boolean) => void;
+  onNext: () => void;
 }
 
-const QuizQuestion = ({ question, onAnswer }: QuizQuestionProps) => {
+const QuizQuestion = ({ question, onAnswer, onNext }: QuizQuestionProps) => {
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
   const [showResult, setShowResult] = useState(false);
 
@@ -31,6 +32,7 @@ const QuizQuestion = ({ question, onAnswer }: QuizQuestionProps) => {
   const handleNext = () => {
     setSelectedAnswer(null);
     setShowResult(false);
+    onNext();
   };
 
   return (
