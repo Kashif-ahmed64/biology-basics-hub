@@ -126,6 +126,7 @@ const Quiz = () => {
             <QuizQuestion
               question={mockQuestions[currentQuestion]}
               onAnswer={handleAnswer}
+              onNext={handleNext}
             />
 
             <div className="flex justify-between items-center">
