@@ -2,11 +2,12 @@ import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import QuizQuestion from '@/components/QuizQuestion';
-import { Brain, RotateCcw, TrendingUp, Award, BookOpen } from 'lucide-react';
+import { Brain, RotateCcw, TrendingUp, Award, BookOpen, Sparkles } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import ProgressBar from '@/components/ProgressBar';
 import { toast } from 'sonner';
-
+import AIQuizGenerator from '@/components/AIQuizGenerator';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 const mockQuestions = [
   {
     id: '1',
@@ -89,7 +90,23 @@ const Quiz = () => {
         </p>
       </div>
 
-      <div className="max-w-3xl mx-auto">
+      <Tabs defaultValue="ai-quiz" className="max-w-3xl mx-auto">
+        <TabsList className="grid w-full grid-cols-2 mb-8">
+          <TabsTrigger value="ai-quiz" className="gap-2">
+            <Sparkles className="h-4 w-4" />
+            AI Generated Quiz
+          </TabsTrigger>
+          <TabsTrigger value="practice" className="gap-2">
+            <BookOpen className="h-4 w-4" />
+            Practice Quiz
+          </TabsTrigger>
+        </TabsList>
+
+        <TabsContent value="ai-quiz">
+          <AIQuizGenerator />
+        </TabsContent>
+
+        <TabsContent value="practice">
         {!showResults ? (
           <div className="space-y-6">
             <Card className="bg-muted/30">
@@ -181,36 +198,37 @@ const Quiz = () => {
             </CardContent>
           </Card>
         )}
-      </div>
 
-      {!showResults && (
-        <div className="mt-12 text-center">
-          <Card className="max-w-2xl mx-auto bg-gradient-to-br from-primary/5 to-secondary/5">
-            <CardHeader>
-              <CardTitle className="font-heading flex items-center justify-center gap-2">
-                <Brain className="h-5 w-5" />
-                Study Tips
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <ul className="text-left space-y-3 text-muted-foreground">
-                <li className="flex items-start gap-2">
-                  <span className="text-primary">💡</span>
-                  <span>Read the explanation carefully after each question to learn from mistakes</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-primary">📚</span>
-                  <span>Review chapter content before taking the quiz for better results</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-primary">🎯</span>
-                  <span>Take your time - there's no time limit, focus on understanding</span>
-                </li>
-              </ul>
-            </CardContent>
-          </Card>
-        </div>
-      )}
+        {!showResults && (
+          <div className="mt-12 text-center">
+            <Card className="bg-gradient-to-br from-primary/5 to-secondary/5">
+              <CardHeader>
+                <CardTitle className="font-heading flex items-center justify-center gap-2">
+                  <Brain className="h-5 w-5" />
+                  Study Tips
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <ul className="text-left space-y-3 text-muted-foreground">
+                  <li className="flex items-start gap-2">
+                    <span className="text-primary">💡</span>
+                    <span>Read the explanation carefully after each question to learn from mistakes</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-primary">📚</span>
+                    <span>Review chapter content before taking the quiz for better results</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-primary">🎯</span>
+                    <span>Take your time - there's no time limit, focus on understanding</span>
+                  </li>
+                </ul>
+              </CardContent>
+            </Card>
+          </div>
+        )}
+        </TabsContent>
+      </Tabs>
     </div>
   );
 };
