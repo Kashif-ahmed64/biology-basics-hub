@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ArrowLeft, BookOpen, ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
 import ThreeDCell from '@/components/ThreeDCell';
 import Breadcrumbs from '@/components/Breadcrumbs';
-
+import AITutor from '@/components/AITutor';
 const Topic = () => {
   const { id } = useParams<{ id: string }>();
   const getTopic = useBiologyStore((state) => state.getTopicById);
@@ -101,6 +101,12 @@ const Topic = () => {
             </div>
           </CardContent>
         </Card>
+
+        {/* AI Tutor Section */}
+        <div className="mt-8">
+          <h2 className="text-2xl font-heading font-bold mb-4">Ask AI Tutor</h2>
+          <AITutor topic={topic.title} grade={chapter?.title.includes('9') ? 'Grade 9' : chapter?.title.includes('10') ? 'Grade 10' : chapter?.title.includes('11') ? 'Grade 11' : 'Grade 12'} />
+        </div>
 
         {/* Navigation between topics */}
         <div className="flex justify-between items-center pt-8 border-t">
